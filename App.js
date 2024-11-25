@@ -8,7 +8,7 @@ import { app, db, getFirestore, collection, addDoc, getDocs } from './firebase/i
 
 export default function App() {
   const [title, setTitle] = useState("");
-
+  
   const addShoppingItem = async () => {
     try {
       const docRef = await addDoc(collection(db, "shopping"), {
