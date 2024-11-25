@@ -23,8 +23,8 @@ export default function App() {
     }
   }
 
-  const getShoppingList = async () => {
-    
+  const getShoppingList = async () => {  
+
     const querySnapshot = await getDocs(collection(db, "shopping"));
     querySnapshot.forEach((doc) => {
       console.log(doc.id, doc.data());
