@@ -2,7 +2,7 @@ import { Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native
 import React, { useEffect, useState } from 'react';
 import { MaterialIcons } from '@expo/vector-icons';
 import AntDesign from '@expo/vector-icons/AntDesign';
-import {db, doc, updateDoc} from '../firebase/index'
+import {db, doc, updateDoc, deleteDoc} from '../firebase/index'
 const ShoppingItem = (props) => {
   const [isChecked, setIsChecked] = useState(props.isChecked);
 
@@ -14,6 +14,11 @@ await updateDoc(shoppingref, {
   isChecked: isChecked,
 });
 
+  };
+
+  const deleteShoppingItem = async() => {
+    await deleteDoc(doc(db, "shopping", props.id));
+    props.getShoppingList();
   };
 
   useEffect(() => {
@@ -40,7 +45,7 @@ await updateDoc(shoppingref, {
       </Text>
 
       {/* delete button */}
-      <TouchableOpacity style={styles.delete}>
+      <TouchableOpacity style={styles.delete} onPress={deleteShoppingItem}>
         <MaterialIcons name="delete" size={24} color="#FF6768" />
       </TouchableOpacity>
     </View>
