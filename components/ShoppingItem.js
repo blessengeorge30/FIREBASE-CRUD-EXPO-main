@@ -1,86 +1,74 @@
-import { Platform, Pressable, StyleSheet, Text, ToastAndroid, TouchableOpacity, View } from 'react-native'
-import React, { useEffect, useState } from 'react'
-// import CheckBox from './CheckBox';
+import { Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import { MaterialIcons } from '@expo/vector-icons';
 import AntDesign from '@expo/vector-icons/AntDesign';
-// import { db, doc, deleteDoc, updateDoc} from "../Config";
-
-
-// export type ShoppingItemProps = {
-//   id: string;
-//   isChecked: boolean;
-//   title: string;
-//   onRefresh: () => void;
-// }
-
+import {db, doc, updateDoc} from '../firebase/index'
 const ShoppingItem = (props) => {
-//   const [isChecked,setIsChecked] = useState(props.isChecked);
+  const [isChecked, setIsChecked] = useState(props.isChecked);
 
-  // delete specific item
-//   const deleteShoppingItem = async() => {
-//     await deleteDoc(doc(db, "Shopping", props.id)).then(()=>{
-//       if(Platform.OS === "android"){
-//         ToastAndroid.show(`${props.title} removed`, ToastAndroid.SHORT);
-//       }
-//       props.onRefresh();
-//     });
-    
-//   }
+  const updateIsChecked = async() => {
+    const shoppingref = doc(db, "shopping", props.id);
 
-  // update isChecked property
-//   const updateIsChecked = async() => {
-//     await updateDoc(doc(db, "Shopping", props.id),{
-//       isChecked: isChecked
-//     })
-//   }
 
-  // call function whenever isChecked property change
-//   useEffect(()=>{
-//     updateIsChecked();
-//   },[isChecked])
+await updateDoc(shoppingref, {
+  isChecked: isChecked,
+});
+
+  };
+
+  useEffect(() => {
+    updateIsChecked();
+
+  }, [isChecked])
 
   return (
     <View style={styles.container}>
       {/* checkbox component */}
-<TouchableOpacity>
-<AntDesign name="checkcircle" size={24} color="white" />
-</TouchableOpacity>
+      <TouchableOpacity onPress={() => setIsChecked(!isChecked)}>
 
-        {/* title */}
-        <Text style={styles.title }>  
-          {props.title}
-        </Text>
-        {/* delete button */}
-        <TouchableOpacity style={styles.delete} >
-          <MaterialIcons name="delete" size={24} color="#FF6768" />
-        </TouchableOpacity>
+        {isChecked ? (
+           <AntDesign name="checkcircle" size={24} color="white" />
+        ): (
+          <AntDesign name="checkcircleo" size={24} color="white" />
+        )}
+  
+      </TouchableOpacity>
+
+      {/* title */}
+      <Text style={styles.txt}>
+        {props.title}
+      </Text>
+
+      {/* delete button */}
+      <TouchableOpacity style={styles.delete}>
+        <MaterialIcons name="delete" size={24} color="#FF6768" />
+      </TouchableOpacity>
     </View>
-  )
+  );
 }
 
-export default ShoppingItem
+export default ShoppingItem;
 
 const styles = StyleSheet.create({
-    container:{
-        flexDirection: "row",
-        // alignSelf: "center",
-        backgroundColor: "#282828",
-        width: "90%",
-        borderRadius: 10,
-        padding: 13,
-        alignItems: "center",
-        marginTop: 15,  
-    },
-    title:{
-        color: "#fff",
-        fontSize: 20,
-        flex: 1,
-        fontWeight: "500"
-    },
-    delete:{
-      alignItems: "center",
-      justifyContent: "center",
-      padding: 2,
-      
-    }
-})
+  container: {
+    flexDirection: "row",
+    backgroundColor: "#282828",
+    width: 350, // Set the width of the container
+    borderRadius: 10,
+    padding: 13,
+    alignItems: "center",
+    marginTop: 15,
+  },
+  txt: {
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "500",
+    marginHorizontal: 10,
+    flex: 1, // This makes the title take up all available space
+  },
+  delete: {
+    alignSelf: 'flex-end', // Aligns the delete button to the right
+    justifyContent: "center",
+    padding: 2,
+  }
+});

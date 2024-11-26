@@ -22,20 +22,23 @@ export default function App() {
     } catch (e) {
       console.error("Error adding document: ", e);
     }
+    getShoppingList();
   }
 
   const getShoppingList = async () => {
-
     const querySnapshot = await getDocs(collection(db, "shopping"));
+    const items = []; // Temporary array to hold the shopping items
+  
     querySnapshot.forEach((doc) => {
-      console.log(doc.id, doc.data());
-      setShoppingList({
+      items.push({
         ...doc.data(),
         id: doc.id,
-      })
+      });
     });
-
-  }
+  
+    // Now update the state with the list of items
+    setShoppingList(items);
+  };
 
   useEffect(() => {
     getShoppingList()
@@ -61,17 +64,22 @@ export default function App() {
 
       </View>
 
-
-
       {/* flatlist */}
 
      {
       shoppingList.length > 0 ? (
       <FlatList 
       data={shoppingList}
-      renderItem={({item})=><ShoppingItem title={item.title}/>}
+      renderItem={({item})=>(
+      <ShoppingItem 
+      title={item.title} 
+      isChecked={item.isChecked}
+      id={item.id}/>
+    
+      )}
       keyExtractor={item=>item.id}
-       /> 
+      /> 
+
      ) : (
        <ActivityIndicator/>
     ) }
@@ -123,7 +131,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     borderRadius: 10,
     width: '90%',
-    marginTop: 'auto',
+    marginTop: 'auto',   
     paddingHorizontal: 20
 
   }
