@@ -1,33 +1,56 @@
 import { StatusBar } from 'expo-status-bar';
-import { SafeAreaView, StyleSheet, Text, View, TouchableOpacity, TextInput, FlatList, ActivityIndicator, Dimensions, PixelRatio } from 'react-native';
+import {
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  TextInput,
+  FlatList,
+  ActivityIndicator,
+  Dimensions,
+  PixelRatio,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+} from 'react-native';
 import { useEffect, useState } from 'react';
 import ShoppingItem from './components/ShoppingItem';
 import { MaterialIcons } from '@expo/vector-icons';
-import { app, db, getFirestore, collection, addDoc, getDocs, deleteDoc, doc } from './firebase/index';
+import {
+  app,
+  db,
+  getFirestore,
+  collection,
+  addDoc,
+  getDocs,
+  deleteDoc,
+  doc,
+} from './firebase/index';
 
 const { width, height } = Dimensions.get('window');
 
 export default function App() {
-  const [title, setTitle] = useState("");
+  const [title, setTitle] = useState('');
   const [shoppingList, setShoppingList] = useState([]);
 
   const addShoppingItem = async () => {
     try {
-      const docRef = await addDoc(collection(db, "shopping"), {
+      const docRef = await addDoc(collection(db, 'shopping'), {
         title: title,
-        isChecked: false
+        isChecked: false,
       });
 
-      console.log("Document written with ID: ", docRef.id);
-      setTitle("")
+      console.log('Document written with ID: ', docRef.id);
+      setTitle('');
     } catch (e) {
-      console.error("Error adding document: ", e);
+      console.error('Error adding document: ', e);
     }
     getShoppingList();
   };
 
   const getShoppingList = async () => {
-    const querySnapshot = await getDocs(collection(db, "shopping"));
+    const querySnapshot = await getDocs(collection(db, 'shopping'));
     const items = [];
 
     querySnapshot.forEach((doc) => {
@@ -41,9 +64,9 @@ export default function App() {
   };
 
   const deleteShoppingList = async () => {
-    const querySnapshot = await getDocs(collection(db, "shopping"));
+    const querySnapshot = await getDocs(collection(db, 'shopping'));
     const deletePromises = querySnapshot.docs.map((item) =>
-      deleteDoc(doc(db, "shopping", item.id))
+      deleteDoc(doc(db, 'shopping', item.id))
     );
     await Promise.all(deletePromises);
     getShoppingList();
@@ -54,70 +77,86 @@ export default function App() {
   }, []);
 
   return (
-    <SafeAreaView style={styles.container}>
-<View style={styles.headerview}>
-  {/* Header Title */}
-  <Text style={styles.heading}>Shopping List</Text>
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    >
+      <SafeAreaView style={styles.container}>
+        <ScrollView
+          contentContainerStyle={{ flexGrow: 1 }}
+          keyboardShouldPersistTaps="handled"
+        >
+          <View style={styles.headerview}>
+            {/* Header Title */}
+            <Text style={styles.heading}>Shopping List</Text>
 
-  {/* Items Count and Delete */}
-  <View style={styles.actionContainer}>
-    <Text style={styles.noofitems}>{shoppingList.length} items</Text>
-    <TouchableOpacity style={styles.deleteButton} onPress={deleteShoppingList}>
-      <MaterialIcons name="delete" size={20} color="#fff" />
-    </TouchableOpacity>
-  </View>
-</View>
+            {/* Items Count and Delete */}
+            <View style={styles.actionContainer}>
+              <Text style={styles.noofitems}>{shoppingList.length} items</Text>
+              <TouchableOpacity
+                style={styles.deleteButton}
+                onPress={deleteShoppingList}
+              >
+                <MaterialIcons name="delete" size={20} color="#fff" />
+              </TouchableOpacity>
+            </View>
+          </View>
 
-
-
-      {/* FlatList */}
-      {shoppingList.length > 0 ? (
-        <FlatList
-          data={shoppingList}
-          renderItem={({ item }) => (
-            <ShoppingItem
-              title={item.title}
-              isChecked={item.isChecked}
-              id={item.id}
-              getShoppingList={getShoppingList}
+          {/* FlatList */}
+          {shoppingList.length > 0 ? (
+            <FlatList
+              data={shoppingList}
+              renderItem={({ item }) => (
+                <ShoppingItem
+                  title={item.title}
+                  isChecked={item.isChecked}
+                  id={item.id}
+                  getShoppingList={getShoppingList}
+                />
+              )}
+              keyExtractor={(item) => item.id}
+              contentContainerStyle={{ paddingBottom: 20 }}
             />
+          ) : (
+            <View style={styles.loadingContainer}>
+              <ActivityIndicator size="large" color="#FF6768" />
+              <Text style={styles.loadingText}>
+                Loading your shopping list...
+              </Text>
+            </View>
           )}
-          keyExtractor={(item) => item.id}
-        />
-      ) : (
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#FF6768" />
-          <Text style={styles.loadingText}>Loading your shopping list...</Text>
-        </View>
-      )}
 
-      {/* Input */}
-      <TextInput
-        placeholder="Enter your item"
-        style={styles.input}
-        value={title}
-        onChangeText={(text) => setTitle(text)}
-        onSubmitEditing={addShoppingItem}
-      />
-    </SafeAreaView>
+          {/* Input */}
+          <TextInput
+            placeholder="Enter your item"
+            style={styles.input}
+            value={title}
+            onChangeText={(text) => setTitle(text)}
+            onSubmitEditing={addShoppingItem}
+          />
+        </ScrollView>
+      </SafeAreaView>
+    </KeyboardAvoidingView>
   );
 }
 
 const responsiveFontSize = (fontSize) => {
-  const scale = width / 375; // 375 is a typical width of a mobile screen
+  const scale = width / 375; 
   return Math.round(PixelRatio.roundToNearestPixel(fontSize * scale));
 };
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f7f8fa',
-    alignItems: 'center',
+  backgroundColor: '#f7f8fa',
+  alignItems: 'center',  
+  justifyContent: 'center',  
   },
   headerview: {
     width: '100%',
     paddingVertical: 20,
     paddingHorizontal: 25,
-    backgroundColor: 'linear-gradient(90deg, #4CAF50, #2E7D32)', // Gradient effect
+    backgroundColor: 'linear-gradient(90deg, #4CAF50, #2E7D32)', 
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
     shadowColor: '#000',
@@ -130,7 +169,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   heading: {
-    fontSize: responsiveFontSize(20),
+    fontSize: responsiveFontSize(21),
     fontWeight: 'bold',
     color: '#000',
   },
@@ -139,7 +178,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   noofitems: {
-    fontSize: responsiveFontSize(16),
+    fontSize: responsiveFontSize(14),
     color: '#000',
     fontWeight: '600',
     marginRight: 10,
@@ -148,7 +187,7 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: '#FF6768',
+    backgroundColor: 'red',
     alignItems: 'center',
     justifyContent: 'center',
     shadowColor: '#FF6768',
@@ -185,27 +224,6 @@ const styles = StyleSheet.create({
     elevation: 3,
     borderColor: '#ccc',
     borderWidth: 1,
-  },
-  listItem: {
-    backgroundColor: '#fff',
-    marginBottom: 10,
-    padding: 15,
-    borderRadius: 10,
-    width: '90%',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  listItemText: {
-    fontSize: responsiveFontSize(16),
-    fontWeight: '500',
-    color: '#333',
-  },
-  buttonText: {
-    color: '#fff',
-    fontSize: responsiveFontSize(14),
-    fontWeight: '600',
+    marginHorizontal:20
   },
 });

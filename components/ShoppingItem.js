@@ -58,21 +58,22 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     backgroundColor: "#282828",
-    width: 350, // Set the width of the container
+    width: 360, // Set the width of the container
     borderRadius: 10,
     padding: 13,
     alignItems: "center",
     marginTop: 15,
+    marginHorizontal:20
   },
   txt: {
     color: "#fff",
     fontSize: 18,
     fontWeight: "500",
-    marginHorizontal: 10,
-    flex: 1, // This makes the title take up all available space
+    marginHorizontal: 15,
+    flex: 1, 
   },
   delete: {
-    alignSelf: 'flex-end', // Aligns the delete button to the right
+    alignSelf: 'flex-end',
     justifyContent: "center",
     padding: 2,
   }
