@@ -13,7 +13,7 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 //   onRefresh: () => void;
 // }
 
-const ShoppingItem = () => {
+const ShoppingItem = (props) => {
 //   const [isChecked,setIsChecked] = useState(props.isChecked);
 
   // delete specific item
@@ -47,8 +47,8 @@ const ShoppingItem = () => {
 </TouchableOpacity>
 
         {/* title */}
-        <Text style={styles.title }>   ITEM 1
-          {/* {props.title} */}
+        <Text style={styles.title }>  
+          {props.title}
         </Text>
         {/* delete button */}
         <TouchableOpacity style={styles.delete} >

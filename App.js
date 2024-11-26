@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { SafeAreaView, StyleSheet, Text, View, TouchableOpacity, TextInput } from 'react-native';
+import { SafeAreaView, StyleSheet, Text, View, TouchableOpacity, TextInput, FlatList, ActivityIndicator } from 'react-native';
 import { useEffect, useState } from 'react';
 import ShoppingItem from './components/ShoppingItem';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -8,7 +8,8 @@ import { app, db, getFirestore, collection, addDoc, getDocs } from './firebase/i
 
 export default function App() {
   const [title, setTitle] = useState("");
-     
+  const [shoppingList, setShoppingList] = useState([]);
+
   const addShoppingItem = async () => {
     try {
       const docRef = await addDoc(collection(db, "shopping"), {
@@ -23,18 +24,22 @@ export default function App() {
     }
   }
 
-  const getShoppingList = async () => {  
-    
+  const getShoppingList = async () => {
+
     const querySnapshot = await getDocs(collection(db, "shopping"));
     querySnapshot.forEach((doc) => {
       console.log(doc.id, doc.data());
+      setShoppingList({
+        ...doc.data(),
+        id: doc.id,
+      })
     });
 
   }
 
-  useEffect (() => {
+  useEffect(() => {
     getShoppingList()
-  },[])
+  }, [])
 
   return (
     <SafeAreaView style={styles.container}>
@@ -56,10 +61,20 @@ export default function App() {
 
       </View>
 
-      <ShoppingItem />
-      <ShoppingItem />
-      <ShoppingItem />
-      <ShoppingItem />
+
+
+      {/* flatlist */}
+
+     {
+      shoppingList.length > 0 ? (
+      <FlatList 
+      data={shoppingList}
+      renderItem={({item})=><ShoppingItem title={item.title}/>}
+      keyExtractor={item=>item.id}
+       /> 
+     ) : (
+       <ActivityIndicator/>
+    ) }
 
       {/* textinput */}
       <TextInput
