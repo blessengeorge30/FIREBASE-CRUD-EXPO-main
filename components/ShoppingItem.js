@@ -2,6 +2,7 @@ import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-nativ
 import React, { useEffect, useState } from 'react';
 import { MaterialIcons } from '@expo/vector-icons';
 import AntDesign from '@expo/vector-icons/AntDesign';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { db, doc, updateDoc, deleteDoc } from '../firebase/index';
 
 const ShoppingItem = (props) => {
@@ -80,6 +81,7 @@ const ShoppingItem = (props) => {
       {/* Delete button */}
       <TouchableOpacity style={styles.delete} onPress={deleteShoppingItem}>
         <MaterialIcons name="delete" size={24} color="#FF6768" />
+        {/* <MaterialCommunityIcons name="delete-alert" size={24} color="#FF6768" /> */}
       </TouchableOpacity>
     </View>
   );
@@ -93,14 +95,14 @@ const styles = StyleSheet.create({
     backgroundColor: "#282828",
     width: 360, 
     borderRadius: 10,
-    padding: 13,
+    padding: 14,
     alignItems: "center",
     marginTop: 15,
     marginHorizontal: 20,
     elevation:10,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
+    shadowOpacity: 0.5,
     shadowRadius: 5,
   },
   txt: {

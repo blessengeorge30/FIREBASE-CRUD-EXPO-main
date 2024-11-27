@@ -19,7 +19,8 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { auth } from '../firebase'; // Import the auth object
-import { onAuthStateChanged, signOut } from 'firebase/auth'; // Import onAuthStateChanged and signOut
+import { onAuthStateChanged, signOut } from 'firebase/auth';
+import * as ImagePicker from 'expo-image-picker';
 import {
   db,
   collection,
@@ -77,7 +78,7 @@ export default function App() {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (!user) {
-        navigation.navigate('Login'); 
+        navigation.navigate('Login');
       }
     });
 
@@ -88,7 +89,7 @@ export default function App() {
     try {
       await signOut(auth);
       console.log('User logged out');
-      navigation.navigate('Login'); 
+      navigation.navigate('Login');
     } catch (error) {
       console.error('Logout failed:', error.message);
     }
@@ -97,6 +98,29 @@ export default function App() {
   useEffect(() => {
     getShoppingList();
   }, []);
+
+
+  // Function to pick an image
+  const pickImage = async () => {
+    // Request permission to access media library
+    const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (!permissionResult.granted) {
+      alert('Permission to access media library is required!');
+      return;
+    }
+
+    // Open the image picker
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      // Handle the selected image (e.g., upload to Firebase or display it)
+      console.log(result.assets[0].uri);
+    }
+  };
 
   return (
     <KeyboardAvoidingView
@@ -146,6 +170,22 @@ export default function App() {
             </View>
           )}
         </View>
+        <View style={styles.buttons}>
+          <TouchableOpacity
+            style={styles.button}
+            
+          >
+            <Text style={styles.buttonText}>PICK YOUR ITEM </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.button}
+            onPress={pickImage} // Call the image picker function
+          >
+            <Text style={styles.buttonText}>Add Image</Text>
+          </TouchableOpacity>
+        </View>
+
 
         {/* Input */}
         <TextInput
@@ -222,7 +262,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 10,  
+    marginTop: 10,
   },
   loadingContainer: {
     flex: 1,
@@ -241,7 +281,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     padding: 15,
     fontSize: responsiveFontSize(16),
-    borderRadius: 10,
+    borderRadius: 70,
     width: '90%',
     marginTop: 'auto',
     marginBottom: 20,
@@ -254,4 +294,33 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginHorizontal: 20,
   },
+  button: {
+    width: 360,
+    height: 40,
+    backgroundColor: '#000',
+    padding: 10,
+    borderRadius: 5,
+    alignItems: 'center',
+    marginVertical: 5,
+    borderRadius: 10,
+    marginHorizontal: 3,
+    backgroundColor: 'red',
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#FF6768',
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.5,
+    shadowRadius: 6,
+    elevation: 5,
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  buttons: {
+marginBottom:15,
+  },
+
+
 });
