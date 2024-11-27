@@ -6,8 +6,8 @@ import { db, doc, updateDoc, deleteDoc } from '../firebase/index';
 
 const ShoppingItem = (props) => {
   const [isChecked, setIsChecked] = useState(props.isChecked);
-  const [isEditing, setIsEditing] = useState(false); // State to manage edit mode
-  const [editedTitle, setEditedTitle] = useState(props.title); // State for the new title
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedTitle, setEditedTitle] = useState(props.title); 
 
   // Update the isChecked status in the database
   const updateIsChecked = async () => {
@@ -59,9 +59,9 @@ const ShoppingItem = (props) => {
           style={[styles.txt, styles.input]}
           value={editedTitle}
           onChangeText={setEditedTitle}
-          onBlur={updateTitle} // Save changes when input loses focus
+          onBlur={updateTitle} 
           returnKeyType="done"
-          onSubmitEditing={updateTitle} // Save changes on Enter key
+          onSubmitEditing={updateTitle} 
         />
       ) : (
         <Text style={styles.txt}>{props.title}</Text>
