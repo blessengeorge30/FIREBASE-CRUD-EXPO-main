@@ -88,7 +88,7 @@ export default function App() {
         >
           <View style={styles.headerview}>
             {/* Header Title */}
-            <Text style={styles.heading}>Shopping List</Text>
+            <Text style={styles.heading}>FIREBASE-CRUD</Text>
 
             {/* Items Count and Delete */}
             <View style={styles.actionContainer}>
@@ -121,7 +121,7 @@ export default function App() {
             <View style={styles.loadingContainer}>
               <ActivityIndicator size="large" color="#FF6768" />
               <Text style={styles.loadingText}>
-                Loading your shopping list...
+                Loading your list...
               </Text>
             </View>
           )}
