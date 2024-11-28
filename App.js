@@ -5,6 +5,7 @@ import LoginScreen from './screens/LoginScreen';
 import SignUpScreen from './screens/SignupScreen';
 import HomeScreen from './screens/HomeScreen';
 import CrudScreen from './screens/CrudScreen';
+import AddScreen from './screens/AddScreen';
 
 const Stack = createStackNavigator();
 
@@ -17,6 +18,7 @@ export default function App() {
         <Stack.Screen name="SignUp" component={SignUpScreen} />
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Crud" component={CrudScreen} />
+        <Stack.Screen name="AddScreen" component={AddScreen} options={{presentation: 'modal'}} />
       </Stack.Navigator>
     </NavigationContainer>
   );

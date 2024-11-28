@@ -15,27 +15,28 @@ import {
 } from 'react-native';
 import { useEffect, useState } from 'react';
 import ShoppingItem from '../components/ShoppingItem';
+import PickedItem from '../components/PickedItem'
 import { MaterialIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { auth } from '../firebase'; // Import the auth object
 import { onAuthStateChanged, signOut } from 'firebase/auth';
-import * as ImagePicker from 'expo-image-picker';
-import {
-  db,
-  collection,
-  addDoc,
-  getDocs,
-  deleteDoc,
-} from '../firebase/index';
+
+import { db, collection, addDoc, getDocs, deleteDoc, doc } from '../firebase/index';
+
 
 const { width, height } = Dimensions.get('window');
 
 export default function App() {
   const [title, setTitle] = useState('');
   const [shoppingList, setShoppingList] = useState([]);
+  const [productsList, setProductsList] = useState([]); // Add this state for products
 
   const navigation = useNavigation();
+
+  const AddScreen = () => {
+    navigation.navigate('AddScreen');
+  };
 
   const addShoppingItem = async () => {
     try {
@@ -66,6 +67,28 @@ export default function App() {
     setShoppingList(items);
   };
 
+  const getProductsList = async () => {
+    try {
+      const querySnapshot = await getDocs(collection(db, 'products'));
+      const products = [];
+      querySnapshot.forEach((doc) => {
+        products.push({
+          ...doc.data(),
+          id: doc.id,
+        });
+      });
+      console.log(products); // Log to verify
+      setProductsList(products);
+    } catch (error) {
+      console.error('Error fetching products:', error);
+    }
+  };
+  
+
+  useEffect(() => {
+    getProductsList(); // Fetch products on component mount
+  }, []);
+
   const deleteShoppingList = async () => {
     const querySnapshot = await getDocs(collection(db, 'shopping'));
     const deletePromises = querySnapshot.docs.map((item) =>
@@ -74,6 +97,36 @@ export default function App() {
     await Promise.all(deletePromises);
     getShoppingList();
   };
+
+const deleteProduct = async (id) => {
+  try {
+    // Delete the document from Firestore
+    await deleteDoc(doc(db, 'products', id));
+
+    // Optimistically update state to remove deleted product
+    setProductsList((prevProducts) =>
+      prevProducts.filter((product) => product.id !== id)
+    );
+    
+    console.log('Product deleted successfully');
+  } catch (error) {
+    console.error('Error deleting product:', error);
+  }
+};
+
+useEffect(() => {
+  const unsubscribe = navigation.addListener('focus', () => {
+    const refresh = navigation.getState().routes.find((route) => route.name === 'App')?.params?.refreshProducts;
+
+    if (refresh) {
+      getProductsList(); // Refresh products
+      navigation.setParams({ refreshProducts: false }); // Reset refresh signal
+    }
+  });
+
+  return unsubscribe;
+}, [navigation]);
+
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -98,29 +151,6 @@ export default function App() {
   useEffect(() => {
     getShoppingList();
   }, []);
-
-
-  // Function to pick an image
-  const pickImage = async () => {
-    // Request permission to access media library
-    const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (!permissionResult.granted) {
-      alert('Permission to access media library is required!');
-      return;
-    }
-
-    // Open the image picker
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      quality: 1,
-    });
-
-    if (!result.canceled) {
-      // Handle the selected image (e.g., upload to Firebase or display it)
-      console.log(result.assets[0].uri);
-    }
-  };
 
   return (
     <KeyboardAvoidingView
@@ -169,23 +199,29 @@ export default function App() {
               <Text style={styles.loadingText}>Loading your list...</Text>
             </View>
           )}
+
+
+<FlatList
+  data={productsList}
+  renderItem={({ item }) => (
+    <PickedItem
+      id={item.id} 
+      title={item.title}
+      description={item.description}
+      imageUrl={item.image} 
+      price={item.price}  
+      deleteProduct={deleteProduct}
+    />
+  )}
+  keyExtractor={(item) => item.id}
+/>
+
         </View>
         <View style={styles.buttons}>
-          <TouchableOpacity
-            style={styles.button}
-            
-          >
+          <TouchableOpacity style={styles.button} onPress={AddScreen}>
             <Text style={styles.buttonText}>PICK YOUR ITEM </Text>
           </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.button}
-            onPress={pickImage} // Call the image picker function
-          >
-            <Text style={styles.buttonText}>Add Image</Text>
-          </TouchableOpacity>
         </View>
-
 
         {/* Input */}
         <TextInput
@@ -324,3 +360,4 @@ marginBottom:15,
 
 
 });
+
