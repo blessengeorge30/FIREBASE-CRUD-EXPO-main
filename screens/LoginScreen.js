@@ -93,8 +93,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   topSection: {
-    flex: 7, // Take 70% of the screen height
-    backgroundColor: '#FFF', // White background for the top part
+    flex: 7, 
+    backgroundColor: '#FFF',
     justifyContent: 'center',
     alignItems: 'center',
   },
