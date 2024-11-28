@@ -1,5 +1,5 @@
 
-# Firebase CRUD App 💡
+# Firebase CRUD Application 🔥
 
 A Firebase CRUD (Create, Read, Update, Delete) app is a simple application demonstrating how to perform basic operations on a Firestore database using Firebase services. This repository includes an example implementation of these operations and serves as a starting point for Firebase-based projects.
 
@@ -19,8 +19,8 @@ A Firebase CRUD (Create, Read, Update, Delete) app is a simple application demon
 
 
 ##  Screenshots
-![App Screenshot](./screenshots/Overview.png)
-![App Screenshot](./screenshots/Overview1.png)
+![App Screenshot](./screenshots/overview.png)
+![App Screenshot](./screenshots/overview1.png)
 
 ## Usage 🔐
 
