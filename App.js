@@ -19,6 +19,7 @@ export default function App() {
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Crud" component={CrudScreen} />
         <Stack.Screen name="AddScreen" component={AddScreen} options={{presentation: 'modal'}} />
+        <Stack.Screen name="EditItems" component={AddScreen} options={{presentation: 'modal'}} />
       </Stack.Navigator>
     </NavigationContainer>
   );
