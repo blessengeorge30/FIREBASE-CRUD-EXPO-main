@@ -22,40 +22,27 @@ A Firebase CRUD (Create, Read, Update, Delete) app is a simple application demon
 ![App Screenshot](./screenshots/overview.png)
 ![App Screenshot](./screenshots/overview1.png)
 
-## Usage 🔐
 
-## Authentication:
+
+# Packages Used 📦
+
+This project uses the following npm packages:
+
+- firebase: For integrating Firebase services like Firestore and Authentication.
+
+- material-ui: Provides reusable React components for faster UI development.
+
+Authentication:
 
 - Sign up or log in to access the app.
 
 - Authentication is managed using Firebase Authentication.
 
-## CRUD Operations:
+CRUD Operations:
 
 - Use the interface to create, read, update, and delete entries.
 
-- All changes are reflected in real-time.
-
-## Prerequisites 🚀
-
-Before running this app, ensure you have the following:
-
-- A Firebase project set up in the Firebase Console.
-
-- Firebase services enabled:
-
-- Firestore Database
-
-- Firebase Authentication
-
-# Main Packages Used
-Below are the primary packages utilized in this project:
-
-- react-native: Framework for building mobile applications.
-- firebase: Backend-as-a-Service (BaaS) platform used for authentication.
-- react-navigation: Handles in-app navigation with stacks and tabs.
-- @react-native-async-storage/async-storage: For storing user session data locally.
-- expo : Framework and platform for universal React applications.
+All changes are reflected in real-time.ebase-hooks: Simplifies Firebase data fetching and authentication 
 
 # Dependencies 🛠️
 
