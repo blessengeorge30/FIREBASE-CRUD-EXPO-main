@@ -108,6 +108,8 @@ Start the server
   npx expo start
 ```
 
-##  Firebase Backend 🔐
+
 ![App Screenshot](./screenshots/download.png)
+
+# Overview
 ![App Screenshot](./screenshots/preview.png)
