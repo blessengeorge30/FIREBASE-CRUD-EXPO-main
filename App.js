@@ -2,8 +2,7 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import LoginScreen from './screens/LoginScreen';
-import SignUpScreen from './screens/SignupScreen';
-import HomeScreen from './screens/HomeScreen';
+import SignUpScreen from './screens/SignupScreen'
 import CrudScreen from './screens/CrudScreen';
 import AddScreen from './screens/AddScreen';
 
@@ -16,7 +15,6 @@ export default function App() {
         {/* Each screen must be wrapped with Stack.Screen */}
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="SignUp" component={SignUpScreen} />
-        <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Crud" component={CrudScreen} />
         <Stack.Screen name="AddScreen" component={AddScreen} options={{presentation: 'modal'}} />
         <Stack.Screen name="EditItems" component={AddScreen} options={{presentation: 'modal'}} />

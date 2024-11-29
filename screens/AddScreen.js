@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { useNavigation } from '@react-navigation/native';
-import { db, collection, addDoc } from '../firebase'; // Ensure correct Firebase setup
+import { db, collection, addDoc } from '../firebase'; 
 
 const UploadProductScreen = () => {
   const navigation = useNavigation();
@@ -57,7 +57,7 @@ const UploadProductScreen = () => {
       setImage(null);
   
       // Call callback function to refresh products
-      navigation.navigate('Crud', { refreshProducts: true }); // Pass refresh signal
+      navigation.navigate('Crud', { refreshProducts: true }); 
     } catch (e) {
       console.error('Error adding document: ', e);
       Alert.alert('Error', 'Failed to upload product. Try again.');

@@ -19,7 +19,7 @@ import PickedItem from '../components/PickedItem'
 import { MaterialIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import { auth } from '../firebase'; // Import the auth object
+import { auth } from '../firebase'; 
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 
 import { db, collection, addDoc, getDocs, deleteDoc, doc } from '../firebase/index';
@@ -30,7 +30,7 @@ const { width, height } = Dimensions.get('window');
 export default function App() {
   const [title, setTitle] = useState('');
   const [shoppingList, setShoppingList] = useState([]);
-  const [productsList, setProductsList] = useState([]); // Add this state for products
+  const [productsList, setProductsList] = useState([]); 
 
   const navigation = useNavigation();
 
@@ -77,7 +77,7 @@ export default function App() {
           id: doc.id,
         });
       });
-      console.log(products); // Log to verify
+      console.log(products); 
       setProductsList(products);
     } catch (error) {
       console.error('Error fetching products:', error);
@@ -86,7 +86,7 @@ export default function App() {
   
 
   useEffect(() => {
-    getProductsList(); // Fetch products on component mount
+    getProductsList(); 
   }, []);
 
   const deleteShoppingList = async () => {
@@ -100,10 +100,10 @@ export default function App() {
 
 const deleteProduct = async (id) => {
   try {
-    // Delete the document from Firestore
+
     await deleteDoc(doc(db, 'products', id));
 
-    // Optimistically update state to remove deleted product
+
     setProductsList((prevProducts) =>
       prevProducts.filter((product) => product.id !== id)
     );
@@ -119,8 +119,8 @@ useEffect(() => {
     const refresh = navigation.getState().routes.find((route) => route.name === 'App')?.params?.refreshProducts;
 
     if (refresh) {
-      getProductsList(); // Refresh products
-      navigation.setParams({ refreshProducts: false }); // Reset refresh signal
+      getProductsList(); 
+      navigation.setParams({ refreshProducts: false }); 
     }
   });
 
