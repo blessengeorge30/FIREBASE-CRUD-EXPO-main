@@ -18,7 +18,7 @@ A Firebase CRUD (Create, Read, Update, Delete) app is a simple application demon
 - Firebase Authentication for secure access control.
 
 
-##  Screenshots
+##  App Screenshots
 ![App Screenshot](./screenshots/overview.png)
 ![App Screenshot](./screenshots/overview1.png)
 ##  Firebase Backend 🔐
