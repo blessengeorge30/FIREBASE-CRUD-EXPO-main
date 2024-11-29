@@ -26,8 +26,7 @@ A Firebase CRUD (Create, Read, Update, Delete) app is a simple application demon
 ![App Screenshot](./screenshots/backend.png)
 ![App Screenshot](./screenshots/backend1.png)
 
-##  Preview Working
-https://drive.google.com/file/d/11-5pheCB3CggztyUYKdT43msqj37DJwC/view?usp=sharing
+
 
 
 # Packages Used 📦 
@@ -113,3 +112,6 @@ Start the server
 
 # Overview
 ![App Screenshot](./screenshots/preview.png)
+
+##  Preview Working
+https://drive.google.com/file/d/11-5pheCB3CggztyUYKdT43msqj37DJwC/view?usp=sharing
