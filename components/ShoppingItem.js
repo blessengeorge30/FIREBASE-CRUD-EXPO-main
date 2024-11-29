@@ -10,7 +10,7 @@ const ShoppingItem = (props) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedTitle, setEditedTitle] = useState(props.title); 
 
-  // Update the isChecked status in the database
+ 
   const updateIsChecked = async () => {
     const shoppingRef = doc(db, "shopping", props.id);
     await updateDoc(shoppingRef, {
@@ -18,34 +18,34 @@ const ShoppingItem = (props) => {
     });
   };
 
-  // Update the title in the database
+
   const updateTitle = async () => {
     const shoppingRef = doc(db, "shopping", props.id);
     try {
       await updateDoc(shoppingRef, {
         title: editedTitle,
       });
-      setIsEditing(false); // Exit edit mode after successful update
-      props.getShoppingList(); // Refresh the list after update
+      setIsEditing(false); 
+      props.getShoppingList(); 
     } catch (error) {
       console.error("Error updating title:", error);
     }
   };
 
-  // Delete the shopping item
+
   const deleteShoppingItem = async () => {
     await deleteDoc(doc(db, "shopping", props.id));
     props.getShoppingList();
   };
 
-  // Call updateIsChecked whenever isChecked changes
+
   useEffect(() => {
     updateIsChecked();
   }, [isChecked]);
 
   return (
     <View style={styles.container}>
-      {/* Checkbox for marking the item as checked/unchecked */}
+      {/* Checkbox  */}
       <TouchableOpacity onPress={() => setIsChecked(!isChecked)}>
         {isChecked ? (
           <AntDesign name="checkcircle" size={24} color="white" />

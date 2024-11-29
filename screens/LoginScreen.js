@@ -9,7 +9,7 @@ const LoginScreen = ({ navigation }) => {
   const [passwordValid, setPasswordValid] = useState(true);  
 
   const handleLogin = async () => {
-    // Simple email validation
+    
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const isEmailValid = emailRegex.test(email);
     const isPasswordValid = password.length >= 6;
@@ -32,7 +32,7 @@ const LoginScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      {/* Top White Section */}
+     
       <View style={styles.topSection}>
         <KeyboardAvoidingView
           style={styles.keyboardContainer}

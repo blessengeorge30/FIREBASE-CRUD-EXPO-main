@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity, TextInput, Modal } from 'react-native';
 import { getDatabase, ref, update } from 'firebase/database';
-import Icon from 'react-native-vector-icons/MaterialIcons'; // Importing the icon library
+import Icon from 'react-native-vector-icons/MaterialIcons'; 
 
 const PickedItem = ({ title, description, imageUrl, price, deleteProduct, id }) => {
-    const [editMode, setEditMode] = useState(false); // For showing edit modal
+    const [editMode, setEditMode] = useState(false); 
     const [updatedTitle, setUpdatedTitle] = useState(title);
     const [updatedDescription, setUpdatedDescription] = useState(description);
     const [updatedPrice, setUpdatedPrice] = useState(price);
@@ -21,7 +21,7 @@ const PickedItem = ({ title, description, imageUrl, price, deleteProduct, id }) 
         })
             .then(() => {
                 console.log('Item updated successfully');
-                setEditMode(false); // Close modal after update
+                setEditMode(false); 
             })
             .catch((error) => {
                 console.error('Error updating item:', error);
