@@ -50,7 +50,7 @@ Authentication:
 CRUD Operations:
 
 - Use the interface to create, read, update, and delete entries.
-- All changes are reflected in real-time: Simplifies Firebase data fetching and authentication 
+- All changes are reflected in real-time.ebase-hooks: Simplifies Firebase data fetching and authentication 
 
 # Getting Started  🚀
 
